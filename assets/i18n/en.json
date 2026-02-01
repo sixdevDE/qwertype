@@ -1,0 +1,21 @@
+{
+  "tab_train": "Learn",
+  "tab_settings": "Settings",
+
+  "settings_title": "Settings",
+  "mode_words": "Single words",
+  "mode_sentences": "Sentences",
+  "setting_darkmode": "Enable dark mode",
+  "apply": "Apply",
+  "saved": "Saved",
+
+  "hint_type_start": "Type START to begin a 60-second session.",
+  "session_started": "Session started (60s).",
+  "session_finished_to_start": "Session finished. Type START to run again.",
+
+  "stats_line_active": "WPM: {wpm} | Accuracy: {acc}% | Errors: {err} | Time: {left}s",
+  "stats_line_idle": "{note}",
+
+  "suggestions": "Weak spots:",
+  "suggestions_empty": "Not enough data yet – keep typing 🙂"
+}

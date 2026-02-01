@@ -1,0 +1,1 @@
+This project is licensed under a proprietary license. See LICENSE for details.

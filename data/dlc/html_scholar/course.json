@@ -1,0 +1,113 @@
+{
+    "id": "html_scholar",
+    "title": "HTML Essentials",
+    "version": "1.0.0",
+    "author": "qwerType Academy",
+    "branding": {
+        "text": "HTML MODUL",
+        "color": "#e34c26"
+    },
+    "intro": {
+        "title": "Welcome to the HTML Scholar Course",
+        "text": "HTML (HyperText Markup Language) is the backbone of the web. In this module, you will master structural tags, content organization, and basic attributes.\n\nType 'START' to begin your first interactive lesson."
+    },
+    "demos": [
+        {
+            "name": "The Perfect Boilerplate",
+            "steps": [
+                {
+                    "code": "<!DOCTYPE html>\n",
+                    "explain": "Every HTML page starts with a Doctype to tell the browser it is HTML5.",
+                    "pause": 2000
+                },
+                {
+                    "code": "<html lang=\"en\">\n",
+                    "explain": "The <html> tag is the root of your document. We usually set the language to English.",
+                    "pause": 1500
+                },
+                {
+                    "code": "<head>\n  <meta charset=\"UTF-8\">\n",
+                    "explain": "The <head> contains meta info. UTF-8 ensures all characters display correctly.",
+                    "pause": 1500
+                },
+                {
+                    "code": "  <title>Scholar Home</title>\n</head>\n",
+                    "explain": "The <title> appears in the browser tab. We close the <head> when meta info is done.",
+                    "pause": 1500
+                },
+                {
+                    "code": "<body>\n  <h1>Welcome</h1>\n</body>\n</html>",
+                    "explain": "The <body> is where your visible content lives. <h1> is a top-level heading.",
+                    "pause": 2000
+                }
+            ]
+        }
+    ],
+    "lessons": [
+        {
+            "name": "Structural Tags",
+            "items": [
+                "<html>",
+                "</html>",
+                "<head>",
+                "</head>",
+                "<body>",
+                "</body>",
+                "<title>",
+                "</title>"
+            ]
+        },
+        {
+            "name": "Common Elements",
+            "items": [
+                "<div>",
+                "</div>",
+                "<span>",
+                "</span>",
+                "<h1>",
+                "</h1>",
+                "<p>",
+                "</p>",
+                "<a>",
+                "</a>"
+            ]
+        },
+        {
+            "name": "Lists & Attributes",
+            "items": [
+                "<ul>",
+                "</ul>",
+                "<li>",
+                "</li>",
+                "href=",
+                "src=",
+                "class=",
+                "id=",
+                "alt="
+            ]
+        }
+    ],
+    "daily_quests": [
+        "Create a link to google.com",
+        "Build a bulleted list with 3 items",
+        "Add an image with alt text"
+    ],
+    "linting": [
+        {
+            "pattern": "</",
+            "tip": "PRO-TIP: Ending a tag? Slashes always come after the opening bracket."
+        },
+        {
+            "pattern": "href=",
+            "tip": "PRO-TIP: 'href' defines the destination of a link."
+        },
+        {
+            "pattern": "<img",
+            "tip": "PRO-TIP: Images are 'self-closing' in most modern HTML standards."
+        },
+        {
+            "pattern": "!",
+            "tip": "PRO-TIP: The !DOCTYPE tells the browser this is an HTML5 document."
+        }
+    ]
+}

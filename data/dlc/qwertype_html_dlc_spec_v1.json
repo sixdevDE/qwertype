@@ -1,0 +1,567 @@
+{
+  "spec_version": "1.0",
+  "generated_at": "2026-01-31T13:16:05",
+  "product": "QwerType Programming Education System",
+  "dlc_id": "html",
+  "dlc_name": "HTML",
+  "language": "de",
+  "core_goals": [
+    "Maximale Interaktion zwischen User und Kurs",
+    "Ghost-Type Demo synchron zum Preview",
+    "Kurs in Mini-Abschnitten mit Continue/Back",
+    "3 Kapitel à ~33% Progression mit Bronze/Silber/Gold Badges"
+  ],
+  "hard_rules": {
+    "do_not_touch_main_ui": true,
+    "main_ui_name": "Fast Type Words & Phrases",
+    "dlc_must_run_in_separate_window": true,
+    "notes": [
+      "Kein Refactor/Keine Änderungen an der bestehenden Main-UI-Struktur.",
+      "DLC läuft vollständig isoliert (eigener Root-Container/State/Input).",
+      "Kommunikation Main<->DLC nur über definierte Schnittstellen (siehe api)."
+    ]
+  },
+  "windowing": {
+    "allowed_modes": [
+      {
+        "mode": "overlay_window",
+        "description": "Überlagerung über dem Main-Window (Modal/Overlay) mit eigenem Root-Container.",
+        "requirements": [
+          "Main-Inputs sind während DLC deaktiviert (Focus/Input-Capture komplett beim DLC).",
+          "Kein Reuse/Hooking in Main-Komponenten; DLC ist eigenständig gerendert."
+        ],
+        "preferred_when_possible": true
+      },
+      {
+        "mode": "separate_os_window",
+        "description": "Echtes separates OS-Fenster (zweites Window) für maximale Isolation.",
+        "requirements": [
+          "Sauberer Cleanup beim Schließen (Timer/Ghost/Preview/Listeners stoppen).",
+          "Main Window bleibt unverändert und läuft weiter stabil."
+        ],
+        "preferred_when_simple": true
+      }
+    ],
+    "lifecycle": {
+      "open": [
+        "User klickt in Main: Start DLC (z.B. HTML)",
+        "App öffnet DLC-Window (overlay oder separates Fenster)",
+        "DLC lädt Kursdaten und startet bei Step 1"
+      ],
+      "runtime": [
+        "Continue/Back Navigation nur im DLC",
+        "Ghost-Type, Editor und Preview nur im DLC",
+        "Autosave empfohlen (oder Exit-Dialog optional)"
+      ],
+      "close": [
+        "Optional: Prompt 'Fortschritt speichern?' (Autosave bevorzugt)",
+        "saveDlcProgress(dlcId, payload)",
+        "awardBadge(dlcId, badgeTier) falls erreicht",
+        "Cleanup aller Timer/Listeners/Threads",
+        "Fenster schließen, Main ist sofort wieder interaktiv"
+      ]
+    }
+  },
+  "api": {
+    "required_public_interface": [
+      {
+        "name": "openDlc",
+        "signature": "openDlc(dlcId: string, mode?: 'overlay_window'|'separate_os_window')"
+      },
+      {
+        "name": "closeDlc",
+        "signature": "closeDlc(dlcId: string)"
+      },
+      {
+        "name": "saveDlcProgress",
+        "signature": "saveDlcProgress(dlcId: string, progressPayload: object)"
+      },
+      {
+        "name": "awardBadge",
+        "signature": "awardBadge(dlcId: string, badgeTier: 'bronze'|'silver'|'gold'|string)"
+      }
+    ],
+    "shared_state_allowed": [
+      "UserProfile (lesen/schreiben für Badges/Unlocks)",
+      "AppSettings (z.B. Sound an/aus)"
+    ],
+    "shared_state_forbidden": [
+      "Main-Session State (Fast Type Words & Phrases)",
+      "Main Input-Handler / Timing / Stats / Layout"
+    ]
+  },
+  "ui_layout": {
+    "recommended": "split",
+    "regions": {
+      "lesson_card": {
+        "position": "left",
+        "contains": [
+          "title",
+          "micro_text",
+          "interaction",
+          "feedback",
+          "hint_button",
+          "continue/back"
+        ]
+      },
+      "live_preview": {
+        "position": "right",
+        "contains": [
+          "rendered_html_result",
+          "click_to_highlight_support"
+        ]
+      },
+      "code_editor": {
+        "position": "bottom_or_right_top",
+        "modes": [
+          "read_only_demo",
+          "editable_now_you"
+        ]
+      },
+      "status_bar": {
+        "contains": [
+          "chapter_progress",
+          "overall_progress",
+          "badge_progress",
+          "xp_optional"
+        ]
+      }
+    },
+    "navigation": {
+      "buttons": [
+        "back",
+        "continue"
+      ],
+      "gates": [
+        "Continue wird erst aktiv, wenn Interaktion abgeschlossen oder bewusst übersprungen wurde.",
+        "Soft-fail: Fehler erlaubt, mit Erklärung + Retry."
+      ]
+    }
+  },
+  "ghost_type": {
+    "purpose": "Demo tippt Code synchron zur Preview; User kann pausieren/tempo/skip.",
+    "controls": [
+      "pause_play",
+      "speed_0_5x",
+      "speed_1x",
+      "speed_2x",
+      "skip_to_end",
+      "replay_optional"
+    ],
+    "typing_behavior": {
+      "cursor_visible": true,
+      "wpm_configurable": true,
+      "human_pauses": true,
+      "preview_update": "live_or_checkpoint_configurable"
+    },
+    "script_format": {
+      "required_fields": [
+        "final_code",
+        "events",
+        "markers"
+      ],
+      "events": {
+        "types": [
+          "insert",
+          "delete",
+          "move_cursor"
+        ],
+        "note": "events können generiert oder zur Laufzeit aus final_code abgeleitet werden"
+      },
+      "markers": {
+        "use": "Erklär-Overlays und Highlight-Ranges (z.B. <head>...</head>)"
+      }
+    }
+  },
+  "progression": {
+    "chapters": [
+      {
+        "id": "ch1",
+        "name": "Basics & Erste Erfolge",
+        "target_percent": 33
+      },
+      {
+        "id": "ch2",
+        "name": "Struktur & Semantik",
+        "target_percent": 33
+      },
+      {
+        "id": "ch3",
+        "name": "Praxis, Patterns & Mini-Projekt",
+        "target_percent": 34
+      }
+    ],
+    "badges": {
+      "tiers": [
+        "bronze",
+        "silver",
+        "gold"
+      ],
+      "rules": [
+        {
+          "tier": "bronze",
+          "unlock": "Kapitel 1 abgeschlossen + Checkpoint bestanden"
+        },
+        {
+          "tier": "silver",
+          "unlock": "Kapitel 2 abgeschlossen + Challenge bestanden"
+        },
+        {
+          "tier": "gold",
+          "unlock": "Kapitel 3 abgeschlossen + Abschluss-Test bestanden"
+        }
+      ],
+      "optional_extra_badges": [
+        "no_hint_run",
+        "speed_typing",
+        "perfect_validation"
+      ]
+    }
+  },
+  "assessment": {
+    "validation": {
+      "approach": "parser_based_not_string_equal",
+      "tolerances": [
+        "Whitespace/Indentation",
+        "Quote-Stile",
+        "Self-closing Varianten (<meta ... /> vs <meta ...>)",
+        "UTF-8 vs utf-8"
+      ],
+      "check_types": [
+        "element_exists",
+        "attribute_exists_or_matches_pattern",
+        "order_constraint",
+        "semantic_constraint (label-for matches input-id)"
+      ],
+      "feedback_style": {
+        "short_helpful": true,
+        "max_examples": 1,
+        "no_wall_of_text": true
+      }
+    }
+  },
+  "interaction_blocks": [
+    "ghost_demo_watch_and_click_to_highlight",
+    "now_you_typing_task_check_run",
+    "fix_the_code_repair_snippet",
+    "fill_the_gap_insert_missing_parts",
+    "sort_drag_drop_structure",
+    "spot_the_error_click_location",
+    "micro_quiz_3_to_5_questions",
+    "challenge_mini_project"
+  ],
+  "course": {
+    "chapters": [
+      {
+        "id": "ch1",
+        "percent_segment": "0-33",
+        "steps": [
+          {
+            "id": "ch1_s1",
+            "title": "Willkommen",
+            "type": "intro",
+            "interaction": {
+              "type": "choice",
+              "prompt": "Wähle dein Ziel",
+              "options": [
+                "Webseiten bauen",
+                "Frontend lernen",
+                "Nur Basics"
+              ],
+              "effect": "Optional: Beispiele/Copy leicht anpassen"
+            }
+          },
+          {
+            "id": "ch1_s2",
+            "title": "Was ist HTML?",
+            "type": "lesson_quiz",
+            "content": [
+              "HTML beschreibt die Struktur (Skelett) einer Webseite.",
+              "CSS ist Design/Style, JavaScript ist Logik/Interaktion."
+            ],
+            "interaction": {
+              "type": "quiz",
+              "questions": [
+                {
+                  "q": "HTML beschreibt hauptsächlich …",
+                  "a": "Struktur"
+                },
+                {
+                  "q": "CSS macht hauptsächlich …",
+                  "a": "Design"
+                },
+                {
+                  "q": "JavaScript macht hauptsächlich …",
+                  "a": "Logik/Interaktion"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ch1_s3",
+            "title": "Ghost Demo: Erste Seite",
+            "type": "ghost_demo",
+            "ghost": {
+              "final_code": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>Hello</title>\n  </head>\n  <body>\n    <h1>Hallo Welt</h1>\n    <p>Meine erste HTML-Seite.</p>\n  </body>\n</html>\n",
+              "markers": [
+                {
+                  "label": "doctype",
+                  "range_hint": "<!doctype html>"
+                },
+                {
+                  "label": "head",
+                  "range_hint": "<head>...</head>"
+                },
+                {
+                  "label": "body",
+                  "range_hint": "<body>...</body>"
+                }
+              ]
+            },
+            "interaction": {
+              "type": "click_to_highlight",
+              "prompt": "Klicke im Preview auf Elemente, um den passenden Code zu markieren."
+            }
+          },
+          {
+            "id": "ch1_s4",
+            "title": "Jetzt du: Schreibe den HTML-Head",
+            "type": "now_you",
+            "starter_code": "<!doctype html>\n<html>\n  \n  <body>\n    <h1>Hallo Welt</h1>\n    <p>Meine erste HTML-Seite.</p>\n  </body>\n</html>\n",
+            "requirements": [
+              "<head>...</head> hinzufügen",
+              "<meta charset=\"utf-8\"> hinzufügen",
+              "<title>...</title> hinzufügen"
+            ],
+            "validation_checks": [
+              {
+                "type": "element_exists",
+                "target": "head"
+              },
+              {
+                "type": "attribute_exists_or_matches_pattern",
+                "target": "meta[charset]",
+                "pattern": "(?i)utf-?8"
+              },
+              {
+                "type": "element_exists",
+                "target": "title"
+              }
+            ],
+            "rewards": [
+              {
+                "type": "badge_progress",
+                "key": "head_starter"
+              }
+            ]
+          },
+          {
+            "id": "ch1_s5",
+            "title": "Tags & Elemente",
+            "type": "fix_the_code",
+            "content": [
+              "<h1>, <p>, <strong>, <em>, <br>"
+            ],
+            "interaction": {
+              "type": "fix_the_code",
+              "broken_snippet": "<h1>Überschrift<h1>\n<p>Text <strong>wichtig</p>\n",
+              "goal": "Schließe Tags korrekt und repariere Nesting."
+            }
+          },
+          {
+            "id": "ch1_s6",
+            "title": "Attribute",
+            "type": "build",
+            "interaction": {
+              "type": "typing_task",
+              "prompt": "Baue einen Link mit href",
+              "goal_pattern": "<a\\s+href=\"https?://[^\"]+\">.*</a>"
+            }
+          },
+          {
+            "id": "ch1_s7",
+            "title": "Bilder",
+            "type": "lesson_quiz",
+            "content": [
+              "<img src=\"...\" alt=\"...\">"
+            ],
+            "interaction": {
+              "type": "quiz",
+              "questions": [
+                {
+                  "q": "Warum ist alt wichtig?",
+                  "a": "Accessibility/Screenreader/SEO"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ch1_checkpoint",
+            "title": "Checkpoint 33%",
+            "type": "checkpoint_test",
+            "rules": {
+              "num_tasks": 5,
+              "pass_threshold": 0.7
+            },
+            "reward_on_pass": [
+              {
+                "type": "badge",
+                "tier": "bronze"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch2",
+        "percent_segment": "33-66",
+        "steps": [
+          {
+            "id": "ch2_s1",
+            "title": "Listen",
+            "type": "build",
+            "interaction": {
+              "type": "typing_task",
+              "goal": "Erstelle <ul><li> Liste"
+            }
+          },
+          {
+            "id": "ch2_s2",
+            "title": "Container vs Semantik",
+            "type": "drag_drop",
+            "interaction": {
+              "type": "drag_drop_structure",
+              "targets": [
+                "header",
+                "main",
+                "footer"
+              ]
+            }
+          },
+          {
+            "id": "ch2_s3",
+            "title": "Semantische Tags",
+            "type": "quiz",
+            "interaction": {
+              "type": "quiz",
+              "questions": [
+                {
+                  "q": "Welche Struktur passt für Blog-Post?",
+                  "a": "article/section/header"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ch2_s4",
+            "title": "Forms Intro",
+            "type": "build",
+            "interaction": {
+              "type": "typing_task",
+              "goal": "Form mit label for + input id"
+            }
+          },
+          {
+            "id": "ch2_s5",
+            "title": "Tables",
+            "type": "build",
+            "interaction": {
+              "type": "typing_task",
+              "goal": "Table mit th/td"
+            }
+          },
+          {
+            "id": "ch2_s6",
+            "title": "Validität",
+            "type": "spot_error",
+            "interaction": {
+              "type": "spot_the_error",
+              "count": 3
+            }
+          },
+          {
+            "id": "ch2_checkpoint",
+            "title": "Checkpoint 66%",
+            "type": "challenge",
+            "requirements": [
+              "header+nav",
+              "main mit 2 sections",
+              "footer"
+            ],
+            "reward_on_pass": [
+              {
+                "type": "badge",
+                "tier": "silver"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch3",
+        "percent_segment": "66-100",
+        "steps": [
+          {
+            "id": "ch3_s1",
+            "title": "Mini-Projekt: Landing Page (Teil 1)",
+            "type": "project_step"
+          },
+          {
+            "id": "ch3_s2",
+            "title": "A11y Basics",
+            "type": "a11y_fix",
+            "interaction": {
+              "type": "fix_the_code",
+              "goal": "Behebe 3 A11y-Probleme"
+            }
+          },
+          {
+            "id": "ch3_s3",
+            "title": "SEO Basics im HTML",
+            "type": "build",
+            "interaction": {
+              "type": "typing_task",
+              "goal": "title + meta description sinnvoll"
+            }
+          },
+          {
+            "id": "ch3_s4",
+            "title": "Embeds",
+            "type": "quiz",
+            "interaction": {
+              "type": "quiz",
+              "questions": [
+                {
+                  "q": "Wann iframe/video/audio?",
+                  "a": "passendes Tag wählen"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ch3_final",
+            "title": "Abschluss-Test",
+            "type": "final_test",
+            "rules": {
+              "num_tasks": 10,
+              "pass_threshold": 0.75
+            },
+            "reward_on_pass": [
+              {
+                "type": "badge",
+                "tier": "gold"
+              }
+            ],
+            "end_screen": {
+              "title": "HTML DLC abgeschlossen",
+              "features": [
+                "Review Mode",
+                "Practice Mode"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "tab_train": "Lernen",
+  "tab_settings": "Einstellungen",
+
+  "settings_title": "Einstellungen",
+  "mode_words": "Einzelne Wörter",
+  "mode_sentences": "Sätze",
+  "setting_darkmode": "Dark Mode aktivieren",
+  "apply": "Übernehmen",
+  "saved": "Gespeichert",
+
+  "hint_type_start": "Tippe START, um eine 60-Sekunden-Session zu starten.",
+  "session_started": "Session gestartet (60s).",
+  "session_finished_to_start": "Session beendet. Tippe START für eine neue Runde.",
+
+  "stats_line_active": "WPM: {wpm} | Genauigkeit: {acc}% | Fehler: {err} | Zeit: {left}s",
+  "stats_line_idle": "{note}",
+
+  "suggestions": "Schwachstellen:",
+  "suggestions_empty": "Noch keine Daten – tippe ein bisschen weiter 🙂"
+}

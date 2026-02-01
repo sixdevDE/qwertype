@@ -1,0 +1,21 @@
+{
+  "words": {
+    "name": "sixdev",
+    "points": 344,
+    "wpm": 35.171056279518254,
+    "acc": 97.72727272727273,
+    "ts": 1769856602
+  },
+  "sentences": null,
+  "py": {
+    "name": "sixdev",
+    "points": 292,
+    "wpm": 29.176318740676685,
+    "acc": 100.0,
+    "ts": 1769853070
+  },
+  "js": null,
+  "cpp": null,
+  "rs": null,
+  "java": null
+}
