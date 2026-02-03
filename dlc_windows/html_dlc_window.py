@@ -175,6 +175,37 @@ class HtmlDlcWindow(QMainWindow):
             return "<br>".join([str(x) for x in content])
         return str(content or "")
 
+    def _build_step_content(self, step: Dict[str, Any]) -> Any:
+        content = step.get("content")
+        if content:
+            return content
+
+        interaction = step.get("interaction") or {}
+        parts: List[str] = []
+
+        prompt = interaction.get("prompt")
+        if prompt:
+            parts.append(f"<p>{prompt}</p>")
+
+        requirements = step.get("requirements") or interaction.get("requirements") or []
+        if requirements:
+            items = "".join([f"<li>{req}</li>" for req in requirements])
+            parts.append(f"<ul>{items}</ul>")
+
+        options = interaction.get("options") or []
+        if options:
+            items = "".join([f"<li>{opt}</li>" for opt in options])
+            parts.append(f"<ul>{items}</ul>")
+
+        questions = interaction.get("questions") or []
+        if questions:
+            items = "".join([f"<li>{q.get('q','')}</li>" for q in questions])
+            parts.append(f"<ul>{items}</ul>")
+
+        if not parts:
+            return ""
+        return parts
+
     def _set_left_content(self, content: Any):
         self.txt_content.setHtml(self._content_to_html(content))
 
@@ -232,7 +263,7 @@ class HtmlDlcWindow(QMainWindow):
             f"{step.get('_chapter_title','')} | Step {self.engine.index+1}/{len(self.engine.steps)} | {stype}"
         )
 
-        self._set_left_content(step.get("content", []))
+        self._set_left_content(self._build_step_content(step))
 
         # defaults
         self._stop_ghost()
@@ -397,10 +428,10 @@ class HtmlDlcWindow(QMainWindow):
 
     def _toast(self, msg: str):
         try:
-            self.main.toast.show_msg(msg, 2000)
+            self.statusBar().showMessage(msg, 2000)
         except Exception:
             try:
-                self.statusBar().showMessage(msg, 2000)
+                self.main.toast.show_msg(msg, 2000)
             except Exception:
                 print(msg)
 

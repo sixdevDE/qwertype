@@ -3221,13 +3221,17 @@ class MainWindow(QMainWindow):
 
     def open_html_dlc_window(self):
         """Open HTML Scholar course in a separate OS window (does NOT touch Main UI)."""
-        spec_path = os.path.join(DATA_DIR, "dlc", "qwertype_html_dlc_spec_v1.json")
+        spec_path = os.path.join(DATA_DIR, "dlc", "html", "qwertype_html_day_01.json")
         if not os.path.exists(spec_path):
-            try:
-                self.toast.show_msg("HTML DLC Spec fehlt: data/dlc/qwertype_html_dlc_spec_v1.json", 2500)
-            except Exception:
-                print("[ERROR] Missing spec:", spec_path)
-            return
+            legacy_path = os.path.join(DATA_DIR, "dlc", "qwertype_html_dlc_spec_v1.json")
+            if os.path.exists(legacy_path):
+                spec_path = legacy_path
+            else:
+                try:
+                    self.toast.show_msg("HTML DLC Spec fehlt: data/dlc/html/qwertype_html_day_01.json", 2500)
+                except Exception:
+                    print("[ERROR] Missing spec:", spec_path)
+                return
         try:
             with open(spec_path, "r", encoding="utf-8") as f:
                 spec_data = json.load(f)
