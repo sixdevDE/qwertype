@@ -1607,7 +1607,7 @@ class HtmlDlcWindowLegacy(QMainWindow):
         self._demo_timer.setSingleShot(True)
 
         # Ghost typer local to this window
-        self.ghost = GhostTyper(wpm=18)
+        self.ghost = GhostTyper(wpm=120)
         self.ghost.char_typed.connect(self._on_demo_char)
         self.ghost.step_finished.connect(self._on_demo_finished)
 
@@ -3570,7 +3570,7 @@ class MainWindow(QMainWindow):
         self.trainer.refresh(60.0, False, f"DEMO: {demo_data.get('name', 'Watching...')}")
         
         # ULTRA-SLOW WPM for educational demo (highly readable)
-        self.ghost = GhostTyper(wpm=18)
+        self.ghost = GhostTyper(wpm=120)
         self.ghost.char_typed.connect(self._on_demo_char)
         self.ghost.step_finished.connect(self._next_demo_step)
         

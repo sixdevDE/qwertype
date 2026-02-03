@@ -32,7 +32,7 @@ class HtmlDlcWindow(QMainWindow):
         self.steps = flatten_course_steps(self.spec)
         self.engine = CourseEngine(self.steps)
 
-        self.ghost = GhostTyper(wpm=18, parent=self)
+        self.ghost = GhostTyper(wpm=120, parent=self)
         self.ghost.typed_count.connect(self._on_ghost_typed)
         self.ghost.finished.connect(self._on_ghost_finished)
         self._ghost_full_text = ""
