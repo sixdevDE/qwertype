@@ -1,256 +1,239 @@
-# html_dlc_window.py
-# QwerType – HTML DLC Window (Standalone Course Framework)
+from __future__ import annotations
+
+from typing import Any, Dict, Optional
 
 from PySide6.QtWidgets import (
-    QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QPushButton, QLabel, QPlainTextEdit, QTextBrowser, QFrame
+    QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QFrame,
+    QLabel, QPushButton, QPlainTextEdit, QTextBrowser
 )
-from PySide6.QtCore import Qt, QTimer, Signal
-import re
+
+from course_framework import CourseEngine, flatten_course_steps, GhostTyper
+from course_framework.validators import validate_step
+from course_framework.progress import badge_for_ratio
 
 
-# -----------------------------
-# Ghost Typer (self-contained)
-# -----------------------------
-class GhostTyper(QTimer):
-    char_typed = Signal(int)
-    finished = Signal()
-
-    def __init__(self, wpm=18):
-        super().__init__()
-        self.setInterval(int(60000 / (wpm * 5)))
-        self._text = ""
-        self._pos = 0
-        self.timeout.connect(self._tick)
-
-    def type_text(self, text: str):
-        self.stop()
-        self._text = text or ""
-        self._pos = 0
-        self.start()
-
-    def _tick(self):
-        if self._pos >= len(self._text):
-            self.stop()
-            self.finished.emit()
-            return
-        self._pos += 1
-        self.char_typed.emit(self._pos)
-
-
-# -----------------------------
-# HTML DLC Window
-# -----------------------------
 class HtmlDlcWindow(QMainWindow):
-    def __init__(self, main_window, theme, i18n, spec_data: dict):
+    """Standalone OS window for HTML DLC course.
+
+    IMPORTANT:
+    - Uses internal course_framework (engine + validators + ghost)
+    - Does NOT touch main UI
+    - Gated Continue for interactive steps (now_you/quiz/fix_the_code)
+    """
+
+    def __init__(self, main_window, theme, i18n, spec_data: Dict[str, Any], data_dir: str):
         super().__init__(None)
         self.main = main_window
         self.theme = theme
         self.i18n = i18n
-        self.spec = spec_data
+        self.data_dir = data_dir
 
-        self.setWindowTitle("QwerType – HTML Kurs")
-        self.resize(1300, 850)
+        self.spec = spec_data or {}
+        self.steps = flatten_course_steps(self.spec)
+        self.engine = CourseEngine(self.steps)
 
-        # ----- course state -----
-        self.steps = self._collect_steps()
-        self.step_index = 0
-        self.step_completed = False
-        self.active_step = None
-
-        # ----- ghost -----
-        self.ghost = GhostTyper()
-        self.ghost.char_typed.connect(self._on_ghost_char)
+        self.ghost = GhostTyper(wpm=18, parent=self)
+        self.ghost.typed_count.connect(self._on_ghost_typed)
         self.ghost.finished.connect(self._on_ghost_finished)
-        self._ghost_text = ""
+        self._ghost_full_text = ""
 
-        # ----- UI -----
-        root = QWidget()
-        self.setCentralWidget(root)
-        layout = QHBoxLayout(root)
-        layout.setContentsMargins(14, 14, 14, 14)
-        layout.setSpacing(14)
+        self._last_badge: Optional[str] = None
 
-        # LEFT: Lesson
+        self.setWindowTitle("QwerType – HTML DLC")
+        self.resize(1280, 820)
+
+        self._build_ui()
+        self._apply_step()
+
+    def _build_ui(self):
+        central = QWidget(self)
+        self.setCentralWidget(central)
+
+        root = QHBoxLayout(central)
+        root.setContentsMargins(14, 14, 14, 14)
+        root.setSpacing(14)
+
+        # Left: lesson
         self.lesson_panel = QFrame()
-        self.lesson_panel.setObjectName("Panel")
         lp = QVBoxLayout(self.lesson_panel)
         lp.setSpacing(10)
 
         self.lbl_title = QLabel("")
-        self.lbl_title.setStyleSheet("font-size:18px;font-weight:700;")
+        self.lbl_title.setStyleSheet("font-size:18px;font-weight:800;")
         lp.addWidget(self.lbl_title)
+
+        self.lbl_meta = QLabel("")
+        self.lbl_meta.setStyleSheet("opacity:0.8;")
+        lp.addWidget(self.lbl_meta)
 
         self.txt_content = QTextBrowser()
         self.txt_content.setOpenExternalLinks(True)
         lp.addWidget(self.txt_content, 1)
 
         nav = QHBoxLayout()
-        self.btn_back = QPushButton("◀ Zurück")
-        self.btn_continue = QPushButton("Weiter ▶")
+        self.btn_back = QPushButton("◀ Back")
+        self.btn_continue = QPushButton("Continue ▶")
         nav.addWidget(self.btn_back)
         nav.addStretch(1)
         nav.addWidget(self.btn_continue)
         lp.addLayout(nav)
 
-        # RIGHT: Workspace
+        # Right: workspace
         self.work_panel = QFrame()
-        self.work_panel.setObjectName("Panel")
         wp = QVBoxLayout(self.work_panel)
-        wp.setSpacing(8)
+        wp.setSpacing(10)
 
-        self.lbl_workspace = QLabel("HTML Workspace")
-        self.lbl_workspace.setStyleSheet("font-size:14px;font-weight:600;")
-        wp.addWidget(self.lbl_workspace)
+        hdr = QHBoxLayout()
+        self.lbl_workspace = QLabel("Workspace")
+        self.lbl_workspace.setStyleSheet("font-size:14px;font-weight:700;")
+        hdr.addWidget(self.lbl_workspace)
+        hdr.addStretch(1)
+
+        self.lbl_progress = QLabel("0%")
+        self.lbl_progress.setStyleSheet("font-weight:700;")
+        hdr.addWidget(self.lbl_progress)
+        wp.addLayout(hdr)
 
         self.editor = QPlainTextEdit()
-        self.editor.setPlaceholderText("Code erscheint hier …")
+        self.editor.setPlaceholderText("Your code …")
         wp.addWidget(self.editor, 3)
 
         self.preview = QTextBrowser()
         self.preview.setFrameShape(QFrame.NoFrame)
         wp.addWidget(self.preview, 2)
 
-        act = QHBoxLayout()
+        actions = QHBoxLayout()
         self.btn_check = QPushButton("Check")
-        self.btn_run = QPushButton("Run Demo")
-        act.addWidget(self.btn_check)
-        act.addStretch(1)
-        act.addWidget(self.btn_run)
-        wp.addLayout(act)
+        self.btn_run_demo = QPushButton("Run Demo")
+        actions.addWidget(self.btn_check)
+        actions.addStretch(1)
+        actions.addWidget(self.btn_run_demo)
+        wp.addLayout(actions)
 
-        layout.addWidget(self.lesson_panel, 3)
-        layout.addWidget(self.work_panel, 4)
+        root.addWidget(self.lesson_panel, 3)
+        root.addWidget(self.work_panel, 4)
 
-        # ----- connections -----
+        # connect
         self.btn_back.clicked.connect(self._on_back)
         self.btn_continue.clicked.connect(self._on_continue)
         self.btn_check.clicked.connect(self._on_check)
-        self.btn_run.clicked.connect(self._on_run_demo)
+        self.btn_run_demo.clicked.connect(self._on_run_demo)
         self.editor.textChanged.connect(self._on_editor_changed)
 
-        # ----- init -----
-        self._load_step(0)
+    def _apply_step(self):
+        step = self.engine.current()
+        stype = self.engine.current_type()
 
-    # -----------------------------
-    # Step handling
-    # -----------------------------
-    def _collect_steps(self):
-        steps = []
-        for ch in self.spec.get("course", {}).get("chapters", []):
-            for st in ch.get("steps", []):
-                steps.append(st)
-        return steps
+        self.lbl_title.setText(step.get("title", "") or "")
+        self.lbl_meta.setText(f"{step.get('_chapter_title','')} • Step {self.engine.index+1}/{len(self.engine.steps)} • {stype}")
 
-    def _load_step(self, index: int):
-        self.ghost.stop()
-        self.step_index = max(0, min(index, len(self.steps) - 1))
-        self.active_step = self.steps[self.step_index]
-        self.step_completed = False
-
-        step = self.active_step
-        stype = step.get("type", "text")
-
-        self.lbl_title.setText(step.get("title", ""))
-        self.txt_content.setHtml("<p>" + "<br>".join(step.get("content", [])) + "</p>")
+        content = step.get("content", [])
+        if isinstance(content, str):
+            html = content
+        else:
+            html = "<br>".join([str(x) for x in content])
+        self.txt_content.setHtml(html)
 
         # defaults
-        self.editor.setReadOnly(True)
-        self.editor.clear()
-        self.preview.clear()
+        self._stop_ghost()
         self.btn_check.setVisible(False)
-        self.btn_run.setVisible(False)
+        self.btn_run_demo.setVisible(False)
+        self.editor.blockSignals(True)
+        self.editor.setPlainText("")
+        self.editor.blockSignals(False)
+        self.preview.setHtml("")
+        self.editor.setReadOnly(True)
         self.btn_continue.setEnabled(True)
 
-        # ---- routing ----
-        if stype in ("intro", "lesson", "text"):
-            self.step_completed = True
-
-        elif stype == "ghost_demo":
-            self.btn_run.setVisible(True)
-            self.step_completed = True
-
+        if stype == "ghost_demo":
+            self.btn_run_demo.setVisible(True)
+            self.lbl_workspace.setText("Ghost Demo")
         elif stype == "now_you":
-            self.editor.setReadOnly(False)
             self.btn_check.setVisible(True)
-            self.btn_continue.setEnabled(False)
-            starter = step.get("starter_code", "")
+            self.editor.setReadOnly(False)
+            starter = step.get("starter_code", "") or step.get("starter", "")
             if starter:
+                self.editor.blockSignals(True)
                 self.editor.setPlainText(starter)
+                self.editor.blockSignals(False)
             self._update_preview()
-
+            self.btn_continue.setEnabled(self.engine.get_state().completed)
+            self.lbl_workspace.setText("Now you")
         else:
-            self.step_completed = True
+            self.lbl_workspace.setText("Reading")
 
-    # -----------------------------
-    # Navigation
-    # -----------------------------
+        self._update_progress_ui()
+
+    def _update_progress_ui(self):
+        ratio = self.engine.progress_ratio()
+        self.lbl_progress.setText(f"{int(ratio*100)}%")
+        badge = badge_for_ratio(ratio)
+        if badge and badge != self._last_badge:
+            self._last_badge = badge
+            self._toast(f"🏅 Badge unlocked: {badge}")
+
     def _on_back(self):
-        if self.step_index > 0:
-            self._load_step(self.step_index - 1)
+        if self.engine.back():
+            self._apply_step()
 
     def _on_continue(self):
-        stype = self.active_step.get("type", "text")
-        if stype in ("now_you", "quiz") and not self.step_completed:
-            self._toast("Bitte Aufgabe lösen, bevor du weitergehst.")
+        if not self.engine.can_continue():
+            self._toast("Solve the task first (Check).")
             return
-        if self.step_index < len(self.steps) - 1:
-            self._load_step(self.step_index + 1)
+        if self.engine.next():
+            self._apply_step()
         else:
             self.close()
 
-    # -----------------------------
-    # Ghost demo
-    # -----------------------------
-    def _on_run_demo(self):
-        ghost = self.active_step.get("ghost", {})
-        code = ghost.get("final_code", "")
-        if not code:
-            self._toast("Kein Demo-Code vorhanden.")
+    def _on_check(self):
+        step = self.engine.current()
+        if self.engine.current_type() != "now_you":
+            self._toast("Nothing to check on this step.")
             return
+        code = self.editor.toPlainText()
+        ok, msg = validate_step(step, code)
+        self.engine.mark_attempt(ok=ok)
+        if ok:
+            self._toast(msg)
+            self.btn_continue.setEnabled(True)
+            self.editor.setReadOnly(True)
+        else:
+            self._toast("❌ " + msg)
+            self.btn_continue.setEnabled(False)
+        self._update_progress_ui()
 
+    def _on_run_demo(self):
+        step = self.engine.current()
+        ghost = step.get("ghost", {}) or {}
+        code = (ghost.get("final_code") or ghost.get("code") or "")
+        if not code:
+            self._toast("No demo code in this step.")
+            return
+        self._ghost_full_text = code
         self.editor.setReadOnly(True)
-        self.editor.clear()
-        self.preview.clear()
-        self._ghost_text = code
-        self.ghost.type_text(code)
+        self.editor.blockSignals(True)
+        self.editor.setPlainText("")
+        self.editor.blockSignals(False)
+        self.preview.setHtml("")
+        self.ghost.start(code)
 
-    def _on_ghost_char(self, pos: int):
-        part = self._ghost_text[:pos]
+    def _stop_ghost(self):
+        try:
+            self.ghost.stop()
+        except Exception:
+            pass
+
+    def _on_ghost_typed(self, count: int):
+        part = self._ghost_full_text[:count]
+        self.editor.blockSignals(True)
         self.editor.setPlainText(part)
+        self.editor.blockSignals(False)
         self.preview.setHtml(part)
 
     def _on_ghost_finished(self):
-        self.preview.setHtml(self._ghost_text)
+        self.preview.setHtml(self._ghost_full_text)
+        self._toast("✅ Demo finished.")
 
-    # -----------------------------
-    # Now-you validation
-    # -----------------------------
-    def _on_check(self):
-        checks = self.active_step.get("validation_checks", [])
-        code = self.editor.toPlainText()
-
-        for c in checks:
-            t = c.get("type")
-            if t == "element_exists":
-                tag = c.get("target", "")
-                if f"<{tag}" not in code.lower():
-                    self._toast(f"<{tag}> fehlt.")
-                    return
-            elif t == "attribute_exists_or_matches_pattern":
-                pat = c.get("pattern", "")
-                if pat and not re.search(pat, code, re.IGNORECASE):
-                    self._toast("Attribut stimmt nicht.")
-                    return
-
-        self.step_completed = True
-        self.btn_continue.setEnabled(True)
-        self.editor.setReadOnly(True)
-        self._toast("✅ Korrekt!")
-
-    # -----------------------------
-    # Preview
-    # -----------------------------
     def _on_editor_changed(self):
         if not self.editor.isReadOnly():
             self._update_preview()
@@ -258,11 +241,15 @@ class HtmlDlcWindow(QMainWindow):
     def _update_preview(self):
         self.preview.setHtml(self.editor.toPlainText())
 
-    # -----------------------------
-    # Utils
-    # -----------------------------
     def _toast(self, msg: str):
         try:
             self.main.toast.show_msg(msg, 2000)
         except Exception:
-            self.statusBar().showMessage(msg, 2000)
+            try:
+                self.statusBar().showMessage(msg, 2000)
+            except Exception:
+                print(msg)
+
+    def closeEvent(self, event):
+        self._stop_ghost()
+        super().closeEvent(event)
