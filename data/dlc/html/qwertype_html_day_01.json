@@ -1,0 +1,173 @@
+{
+  "meta": {
+    "course_id": "html_v1",
+    "day": 1,
+    "title": "HTML verstehen – Struktur, Sinn & Denkweise",
+    "estimated_minutes": 70,
+    "language": "de"
+  },
+  "course": {
+    "chapters": [
+      {
+        "id": "day1_intro",
+        "title": "Grundverständnis HTML",
+        "steps": [
+
+          {
+            "id": "d1_s1_welcome",
+            "type": "deep_read",
+            "title": "Willkommen im HTML-Kurs",
+            "content": [
+              "<p>Willkommen.</p>",
+              "<p>Bevor wir irgendetwas tippen, klären wir eine Sache ganz klar:</p>",
+              "<p><strong>HTML ist keine Programmiersprache.</strong></p>",
+              "<p>HTML beschreibt <strong>Struktur</strong>. Nicht Design. Nicht Logik.</p>",
+              "<p>Wenn du HTML wirklich verstehst, wirst du:</p>",
+              "<ul><li>CSS schneller lernen</li><li>JavaScript besser verstehen</li><li>weniger Bugs produzieren</li></ul>",
+              "<p>In diesem Kurs wirst du viel lesen, viel schreiben und Dinge mehrfach schreiben.</p>",
+              "<p>Das ist Absicht. Lernen funktioniert nicht durch Weiterklicken.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_s2_reflection_expectation",
+            "type": "reflection",
+            "title": "Was glaubst du, ist HTML?",
+            "content": [
+              "<p>Bevor wir weitermachen, halte kurz inne.</p>",
+              "<p><strong>Beantworte für dich:</strong></p>",
+              "<ul><li>Wofür glaubst du, ist HTML da?</li><li>Was macht ein Browser mit HTML?</li></ul>",
+              "<p>Du musst nichts eintippen. Denk kurz darüber nach.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_s3_what_is_html",
+            "type": "deep_read",
+            "title": "Was HTML wirklich ist – und was nicht",
+            "content": [
+              "<p>HTML beschreibt die Bedeutung von Inhalten.</p>",
+              "<p>Ein Browser liest HTML von oben nach unten und baut daraus eine Struktur – das sogenannte DOM.</p>",
+              "<p>HTML sagt nicht, wie etwas aussieht. Das ist Aufgabe von CSS.</p>",
+              "<p>HTML enthält keine Logik. Das ist Aufgabe von JavaScript.</p>",
+              "<p>HTML ist vergleichbar mit dem Skelett eines Körpers: Es gibt Halt und Struktur.</p>",
+              "<p>Wenn HTML falsch strukturiert ist, wird alles darüber instabil.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_s4_tree_model",
+            "type": "deep_read",
+            "title": "HTML als Baum denken",
+            "content": [
+              "<p>HTML ist kein linearer Text.</p>",
+              "<p>HTML ist eine Baumstruktur.</p>",
+              "<p>Elemente können andere Elemente enthalten. Alles ist verschachtelt.</p>",
+              "<p>Wenn du HTML als Baum denkst, wirst du es deutlich schneller verstehen.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_s5_ghost_intro",
+            "type": "ghost_demo",
+            "title": "HTML-Grundgerüst entsteht",
+            "content": [
+              "<p>Der Ghost baut jetzt das HTML-Grundgerüst.</p>",
+              "<p>Er tippt abschnittsweise und hält an.</p>",
+              "<p>Lies die Hinweise links, bevor du weitergehst.</p>"
+            ],
+            "ghost": {
+              "final_code": "<!DOCTYPE html>\n<html>\n  <head>\n    <title>Meine erste Seite</title>\n  </head>\n  <body>\n  </body>\n</html>"
+            }
+          },
+
+          {
+            "id": "d1_s6_guided_typing",
+            "type": "now_you",
+            "title": "Jetzt du: HTML-Grundgerüst schreiben",
+            "content": [
+              "<p>Jetzt schreibst du das Grundgerüst selbst.</p>",
+              "<p>Schreibe bewusst und achte auf die Struktur.</p>"
+            ],
+            "starter_code": "<!DOCTYPE html>\n<html>\n\n</html>",
+            "validation_checks": [
+              { "type": "element_exists", "target": "html" },
+              { "type": "element_exists", "target": "head" },
+              { "type": "element_exists", "target": "body" },
+              { "type": "element_exists", "target": "title" }
+            ],
+            "success_msg": "Sehr gut! Das Grundgerüst ist korrekt."
+          },
+
+          {
+            "id": "d1_s7_fill_gaps",
+            "type": "now_you",
+            "title": "Lücken füllen (Wiederholung)",
+            "content": [
+              "<p>Fülle die Lücken aus dem Kopf.</p>",
+              "<p>Keine Hilfe, kein Abschreiben.</p>"
+            ],
+            "starter_code": "<!____ html>\n<____>\n  <____>\n    <____>Meine Seite</____>\n  </____>\n  <____>\n  </____>\n</____>",
+            "validation_checks": [
+              { "type": "regex", "pattern": "<!DOCTYPE html>" },
+              { "type": "element_exists", "target": "html" },
+              { "type": "element_exists", "target": "head" },
+              { "type": "element_exists", "target": "body" },
+              { "type": "element_exists", "target": "title" }
+            ]
+          },
+
+          {
+            "id": "d1_s8_debug",
+            "type": "now_you",
+            "title": "Fehler finden und reparieren",
+            "content": [
+              "<p>Dieses HTML ist logisch falsch.</p>",
+              "<p>Finde den Fehler und repariere ihn.</p>"
+            ],
+            "starter_code": "<html>\n  <body>\n    <head>\n      <title>Test</title>\n    </head>\n  </body>\n</html>",
+            "validation_checks": [
+              {
+                "type": "regex",
+                "pattern": "<html>[\\s\\S]*<head>[\\s\\S]*</head>[\\s\\S]*<body>[\\s\\S]*</body>[\\s\\S]*</html>",
+                "fail_msg": "Der Head muss vor dem Body stehen."
+              }
+            ]
+          },
+
+          {
+            "id": "d1_s9_reflection_end",
+            "type": "reflection",
+            "title": "Reflektion",
+            "content": [
+              "<p>Denk kurz nach:</p>",
+              "<ul>",
+              "<li>Warum ist die Reihenfolge von head und body wichtig?</li>",
+              "<li>Was passiert, wenn HTML falsch strukturiert ist?</li>",
+              "</ul>"
+            ]
+          },
+
+          {
+            "id": "d1_s10_challenge",
+            "type": "now_you",
+            "title": "Mini-Challenge",
+            "content": [
+              "<p>Letzte Aufgabe für heute.</p>",
+              "<p>Schreibe das komplette HTML-Grundgerüst ohne Vorlage.</p>"
+            ],
+            "starter_code": "",
+            "validation_checks": [
+              { "type": "element_exists", "target": "html" },
+              { "type": "element_exists", "target": "head" },
+              { "type": "element_exists", "target": "body" },
+              { "type": "element_exists", "target": "title" }
+            ],
+            "success_msg": "Großartig! Tag 1 abgeschlossen."
+          }
+
+        ]
+      }
+    ]
+  }
+}

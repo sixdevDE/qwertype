@@ -68,6 +68,10 @@ class CourseEngine:
         if ok:
             s.completed = True
 
+    def mark_completed(self, step_id: Optional[str] = None):
+        s = self.get_state(step_id)
+        s.completed = True
+
     def can_continue(self) -> bool:
         step = self.current()
         if not self.is_interactive(step):
@@ -76,9 +80,18 @@ class CourseEngine:
             return True
         return self.get_state().completed
 
+    def _auto_complete_current(self):
+        step = self.current()
+        if self.is_interactive(step):
+            if step.get("requires_completion", True) is False:
+                self.mark_completed()
+        else:
+            self.mark_completed()
+
     def next(self) -> bool:
         if not self.can_continue():
             return False
+        self._auto_complete_current()
         if self.index < len(self.steps) - 1:
             self.index += 1
             return True
@@ -94,9 +107,6 @@ class CourseEngine:
         done = 0
         for st in self.steps:
             sid = str(st.get("id"))
-            if self.is_interactive(st) and st.get("requires_completion", True) is not False:
-                if self.state.get(sid, StepState()).completed:
-                    done += 1
-            else:
+            if self.state.get(sid, StepState()).completed:
                 done += 1
         return done / max(1, len(self.steps))
