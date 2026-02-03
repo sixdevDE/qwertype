@@ -1592,7 +1592,7 @@ class ScholarLessonWidget(QWidget):
         self.card.setMinimumWidth(int(700 * s))
         self.lbl_title.setStyleSheet(f"font-size: {int(20*s)}pt; font-weight: bold; color: #7c5cff;")
 
-class HtmlDlcWindow(QMainWindow):
+class HtmlDlcWindowLegacy(QMainWindow):
     """Standalone OS window for HTML Scholar DLC (does NOT touch Main UI)."""
     def __init__(self, main_window: 'MainWindow', spec_data: dict):
         super().__init__(None)
@@ -3238,13 +3238,13 @@ class MainWindow(QMainWindow):
                 print("Error loading spec:", e)
             return
 
-        if getattr(self, "_html_dlc_win", None) and self._html_dlc_win.isVisible():
-            self._html_dlc_win.raise_()
-            self._html_dlc_win.activateWindow()
+        if getattr(self, "html_dlc_win", None) and self.html_dlc_win.isVisible():
+            self.html_dlc_win.raise_()
+            self.html_dlc_win.activateWindow()
             return
 
-        self._html_dlc_win = HtmlDlcWindow(self, spec_data)
-        self._html_dlc_win.show()
+        self.html_dlc_win = HtmlDlcWindow(self, self.theme, self.i18n, spec_data, DATA_DIR)
+        self.html_dlc_win.show()
 
     def _mode_bucket_key(self, mode: str) -> str:
         # Für Highscores als Keys
