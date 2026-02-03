@@ -43,6 +43,7 @@ class HtmlDlcWindow(QMainWindow):
         self.resize(1280, 820)
 
         self._build_ui()
+        self._apply_theme()
         self._apply_step()
 
     def _build_ui(self):
@@ -55,6 +56,7 @@ class HtmlDlcWindow(QMainWindow):
 
         # Left: lesson
         self.lesson_panel = QFrame()
+        self.lesson_panel.setObjectName("Panel")
         lp = QVBoxLayout(self.lesson_panel)
         lp.setSpacing(10)
 
@@ -80,6 +82,7 @@ class HtmlDlcWindow(QMainWindow):
 
         # Right: workspace
         self.work_panel = QFrame()
+        self.work_panel.setObjectName("Panel")
         wp = QVBoxLayout(self.work_panel)
         wp.setSpacing(10)
 
@@ -119,6 +122,45 @@ class HtmlDlcWindow(QMainWindow):
         self.btn_check.clicked.connect(self._on_check)
         self.btn_run_demo.clicked.connect(self._on_run_demo)
         self.editor.textChanged.connect(self._on_editor_changed)
+
+    def _apply_theme(self):
+        # Apply app-wide stylesheet if available
+        try:
+            if hasattr(self.theme, "app_stylesheet"):
+                self.setStyleSheet(self.theme.app_stylesheet())
+        except Exception:
+            pass
+
+        is_dark = True
+        try:
+            is_dark = bool(getattr(self.theme, "is_dark", True))
+        except Exception:
+            pass
+
+        if is_dark:
+            content_bg = "#0d1117"
+            content_text = "#e8eaf0"
+            border = "#232a3a"
+            editor_bg = "#0d1117"
+            editor_text = "#e6edf3"
+        else:
+            content_bg = "#ffffff"
+            content_text = "#1a1f2a"
+            border = "#d9dfeb"
+            editor_bg = "#ffffff"
+            editor_text = "#0d1117"
+
+        self.txt_content.setStyleSheet(
+            f"background:{content_bg}; color:{content_text}; border:1px solid {border}; "
+            "border-radius:12px; padding:8px;"
+        )
+        self.editor.setStyleSheet(
+            f"background:{editor_bg}; color:{editor_text}; border:2px solid {border}; "
+            "border-radius:12px; padding:10px; font-family: Consolas, monospace;"
+        )
+        self.preview.setStyleSheet(
+            "background:#ffffff; color:#000000; border:1px solid #d9dfeb; border-radius:12px; padding:8px;"
+        )
 
     def _apply_step(self):
         step = self.engine.current()
