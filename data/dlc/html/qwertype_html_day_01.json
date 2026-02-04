@@ -2,170 +2,788 @@
   "meta": {
     "course_id": "html_v1",
     "day": 1,
-    "title": "HTML verstehen – Struktur, Sinn & Denkweise",
+    "title": "Tag 1 – HTML wirklich verstehen (Struktur, Sinn, Denkweise)",
     "estimated_minutes": 70,
-    "language": "de"
+    "language": "de",
+    "version": "1.0.0-v2"
   },
   "course": {
     "chapters": [
       {
-        "id": "day1_intro",
-        "title": "Grundverständnis HTML",
+        "id": "day1_full",
+        "title": "Tag 1",
         "steps": [
-
           {
-            "id": "d1_s1_welcome",
+            "id": "d1_001",
             "type": "deep_read",
-            "title": "Willkommen im HTML-Kurs",
+            "title": "Start – Was du heute erreichst",
             "content": [
-              "<p>Willkommen.</p>",
-              "<p>Bevor wir irgendetwas tippen, klären wir eine Sache ganz klar:</p>",
-              "<p><strong>HTML ist keine Programmiersprache.</strong></p>",
-              "<p>HTML beschreibt <strong>Struktur</strong>. Nicht Design. Nicht Logik.</p>",
-              "<p>Wenn du HTML wirklich verstehst, wirst du:</p>",
-              "<ul><li>CSS schneller lernen</li><li>JavaScript besser verstehen</li><li>weniger Bugs produzieren</li></ul>",
-              "<p>In diesem Kurs wirst du viel lesen, viel schreiben und Dinge mehrfach schreiben.</p>",
-              "<p>Das ist Absicht. Lernen funktioniert nicht durch Weiterklicken.</p>"
+              "<p><strong>Heute</strong> baust du ein mentales Modell von HTML.</p>",
+              "<ul><li>Du verstehst, was HTML ist (und was nicht).</li><li>Du verstehst, wie Browser HTML „lesen“.</li><li>Du schreibst das HTML-Grundgerüst mehrfach – bis es sitzt.</li></ul>",
+              "<p>Dieser Kurs ist absichtlich nicht „durchklicken“: Du wirst lesen, entscheiden, schreiben, Lücken füllen, Fehler reparieren.</p>"
             ]
           },
-
           {
-            "id": "d1_s2_reflection_expectation",
+            "id": "d1_002",
             "type": "reflection",
-            "title": "Was glaubst du, ist HTML?",
+            "title": "Mini-Check (für dich) – Erwartung",
             "content": [
-              "<p>Bevor wir weitermachen, halte kurz inne.</p>",
-              "<p><strong>Beantworte für dich:</strong></p>",
-              "<ul><li>Wofür glaubst du, ist HTML da?</li><li>Was macht ein Browser mit HTML?</li></ul>",
-              "<p>Du musst nichts eintippen. Denk kurz darüber nach.</p>"
+              "<p>Beantworte im Kopf (kein Richtig/Falsch):</p>",
+              "<ul><li>Wofür glaubst du, ist HTML da?</li><li>Was macht ein Browser, wenn er HTML bekommt?</li></ul>",
+              "<p>Weiter, wenn du kurz nachgedacht hast.</p>"
             ]
           },
-
           {
-            "id": "d1_s3_what_is_html",
+            "id": "d1_003",
             "type": "deep_read",
-            "title": "Was HTML wirklich ist – und was nicht",
+            "title": "Wichtig: HTML ist nicht CSS und nicht JavaScript",
             "content": [
-              "<p>HTML beschreibt die Bedeutung von Inhalten.</p>",
-              "<p>Ein Browser liest HTML von oben nach unten und baut daraus eine Struktur – das sogenannte DOM.</p>",
-              "<p>HTML sagt nicht, wie etwas aussieht. Das ist Aufgabe von CSS.</p>",
-              "<p>HTML enthält keine Logik. Das ist Aufgabe von JavaScript.</p>",
-              "<p>HTML ist vergleichbar mit dem Skelett eines Körpers: Es gibt Halt und Struktur.</p>",
-              "<p>Wenn HTML falsch strukturiert ist, wird alles darüber instabil.</p>"
+              "<p><strong>HTML</strong> beschreibt Struktur und Bedeutung (Semantik).</p>",
+              "<p><strong>CSS</strong> beschreibt Aussehen.</p>",
+              "<p><strong>JavaScript</strong> beschreibt Verhalten/Logik.</p>",
+              "<p>Wenn du HTML sauber strukturierst, werden CSS und JS später viel leichter.</p>"
             ]
           },
-
           {
-            "id": "d1_s4_tree_model",
+            "id": "d1_004",
             "type": "deep_read",
-            "title": "HTML als Baum denken",
+            "title": "Mentales Modell: HTML ist ein Dokument",
             "content": [
-              "<p>HTML ist kein linearer Text.</p>",
-              "<p>HTML ist eine Baumstruktur.</p>",
-              "<p>Elemente können andere Elemente enthalten. Alles ist verschachtelt.</p>",
-              "<p>Wenn du HTML als Baum denkst, wirst du es deutlich schneller verstehen.</p>"
+              "<p>Denke an HTML wie an ein Dokument: Überschriften, Absätze, Listen, Abschnitte.</p>",
+              "<p>Browser bauen daraus eine Struktur (DOM). Du lernst heute, diese Struktur zu „sehen“.</p>"
+            ]
+          },
+          {
+            "id": "d1_005",
+            "type": "deep_read",
+            "title": "Warum es wichtig ist",
+            "content": [
+              "<p>Viele Anfänger schreiben HTML wie zufälligen Text mit Tags.</p>",
+              "<p>Profis schreiben HTML als <strong>saubere Struktur</strong>.</p>",
+              "<p>Das spart später Zeit, verhindert Bugs und macht Seiten zugänglicher.</p>"
             ]
           },
 
           {
-            "id": "d1_s5_ghost_intro",
+            "id": "d1_006",
+            "type": "deep_read",
+            "title": "Lesetempo-Hinweis",
+            "content": [
+              "<p>Normal ist: 120–180 Wörter/Minute bei neuem Stoff.</p>",
+              "<p>Wenn du heute nur klickst, lernst du fast nichts. Wenn du liest + übst, merkst du’s.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_007",
+            "type": "deep_read",
+            "title": "Was ein Browser mit HTML macht (Überblick)",
+            "content": [
+              "<ol>",
+              "<li>Er liest den Text von oben nach unten.</li>",
+              "<li>Er erkennt Tags/Attribute.</li>",
+              "<li>Er baut daraus einen Baum (DOM).</li>",
+              "<li>Er stellt ihn dar (Render).</li>",
+              "</ol>",
+              "<p>Heute fokussieren wir Schritt 1–3.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_008",
+            "type": "reflection",
+            "title": "Mini-Check – Drei Rollen",
+            "content": [
+              "<p>Merksatz:</p>",
+              "<ul><li>HTML = Struktur</li><li>CSS = Aussehen</li><li>JS = Verhalten</li></ul>",
+              "<p>Wenn du’s im Kopf wiederholen kannst, weiter.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_009",
+            "type": "deep_read",
+            "title": "Tag, Element, Attribut – Begriffe",
+            "content": [
+              "<p><strong>Tag</strong> ist die Schreibweise, z. B. <code>&lt;p&gt;</code>.</p>",
+              "<p><strong>Element</strong> ist das Ding im DOM: Starttag + Inhalt + Endtag.</p>",
+              "<p><strong>Attribut</strong> sind Zusatzinfos, z. B. <code>href</code>, <code>src</code>.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_010",
+            "type": "deep_read",
+            "title": "Verschachtelung ist alles",
+            "content": [
+              "<p>HTML ist hierarchisch: Elemente enthalten andere Elemente.</p>",
+              "<p>Wenn du die Hierarchie brichst, wird das DOM komisch – und du bekommst schwer erklärbare Effekte.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_011",
+            "type": "deep_read",
+            "title": "HTML als Baum (DOM) – ein Bild im Kopf",
+            "content": [
+              "<p>Stell dir vor:</p>",
+              "<pre>html\n├─ head\n│  └─ title\n└─ body</pre>",
+              "<p>Das ist das Grundgerüst, das du heute automatisierst.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_012",
+            "type": "reflection",
+            "title": "Mini-Check – Baum",
+            "content": [
+              "<p>Frage: Was ist das „Root“-Element der Seite?</p>",
+              "<p>Antwort im Kopf: <strong>&lt;html&gt;</strong></p>"
+            ]
+          },
+
+          {
+            "id": "d1_013",
+            "type": "deep_read",
+            "title": "Warum es einen head gibt",
+            "content": [
+              "<p>Der <code>&lt;head&gt;</code> enthält Infos über das Dokument:</p>",
+              "<ul><li>Titel (Browser-Tab)</li><li>Metadaten (z. B. Zeichensatz)</li><li>Verlinkungen (später CSS, Icons)</li></ul>",
+              "<p>Diese Dinge sind meist nicht direkt sichtbar im Seiteninhalt.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_014",
+            "type": "deep_read",
+            "title": "Warum es einen body gibt",
+            "content": [
+              "<p>Der <code>&lt;body&gt;</code> enthält das, was Nutzer sehen/lesen/interagieren.</p>",
+              "<p>Wenn du head/body verwechselst, wird das Dokument logisch falsch.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_015",
+            "type": "deep_read",
+            "title": "Reihenfolge ist nicht Deko",
+            "content": [
+              "<p>Grundregel:</p>",
+              "<pre>&lt;html&gt;\n  &lt;head&gt;...&lt;/head&gt;\n  &lt;body&gt;...&lt;/body&gt;\n&lt;/html&gt;</pre>",
+              "<p>Du wirst das gleich in mehreren Varianten üben.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_016",
             "type": "ghost_demo",
-            "title": "HTML-Grundgerüst entsteht",
+            "title": "Ghost Demo – Grundgerüst (mit Hinweis!)",
             "content": [
-              "<p>Der Ghost baut jetzt das HTML-Grundgerüst.</p>",
-              "<p>Er tippt abschnittsweise und hält an.</p>",
-              "<p>Lies die Hinweise links, bevor du weitergehst.</p>"
+              "<p><strong>Action:</strong> Klicke rechts auf <strong>Run Demo</strong>.</p>",
+              "<p>Der Ghost tippt das HTML-Grundgerüst in den Editor. Schau dabei bewusst auf die Reihenfolge.</p>",
+              "<p>Tipp: Du kannst Run Demo jederzeit erneut starten.</p>"
             ],
             "ghost": {
-              "final_code": "<!DOCTYPE html>\n<html>\n  <head>\n    <title>Meine erste Seite</title>\n  </head>\n  <body>\n  </body>\n</html>"
+              "final_code": "<!DOCTYPE html>\n<html>\n  <head>\n    <title>Meine erste Seite</title>\n  </head>\n  <body>\n  </body>\n</html>\n"
             }
           },
 
           {
-            "id": "d1_s6_guided_typing",
-            "type": "now_you",
-            "title": "Jetzt du: HTML-Grundgerüst schreiben",
+            "id": "d1_017",
+            "type": "deep_read",
+            "title": "Was du gerade gesehen hast",
             "content": [
-              "<p>Jetzt schreibst du das Grundgerüst selbst.</p>",
-              "<p>Schreibe bewusst und achte auf die Struktur.</p>"
-            ],
-            "starter_code": "<!DOCTYPE html>\n<html>\n\n</html>",
-            "validation_checks": [
-              { "type": "element_exists", "target": "html" },
-              { "type": "element_exists", "target": "head" },
-              { "type": "element_exists", "target": "body" },
-              { "type": "element_exists", "target": "title" }
-            ],
-            "success_msg": "Sehr gut! Das Grundgerüst ist korrekt."
-          },
-
-          {
-            "id": "d1_s7_fill_gaps",
-            "type": "now_you",
-            "title": "Lücken füllen (Wiederholung)",
-            "content": [
-              "<p>Fülle die Lücken aus dem Kopf.</p>",
-              "<p>Keine Hilfe, kein Abschreiben.</p>"
-            ],
-            "starter_code": "<!____ html>\n<____>\n  <____>\n    <____>Meine Seite</____>\n  </____>\n  <____>\n  </____>\n</____>",
-            "validation_checks": [
-              { "type": "regex", "pattern": "<!DOCTYPE html>" },
-              { "type": "element_exists", "target": "html" },
-              { "type": "element_exists", "target": "head" },
-              { "type": "element_exists", "target": "body" },
-              { "type": "element_exists", "target": "title" }
+              "<p>Du hast gesehen:</p>",
+              "<ol><li>DOCTYPE ist keine „normale“ HTML-Struktur, aber wichtig.</li><li>html ist das Root-Element.</li><li>head kommt vor body.</li><li>title sitzt im head.</li></ol>",
+              "<p>Jetzt wird’s praktisch.</p>"
             ]
           },
 
           {
-            "id": "d1_s8_debug",
+            "id": "d1_018",
             "type": "now_you",
-            "title": "Fehler finden und reparieren",
+            "title": "Jetzt du – Schreibe das Grundgerüst (geführt)",
             "content": [
-              "<p>Dieses HTML ist logisch falsch.</p>",
-              "<p>Finde den Fehler und repariere ihn.</p>"
+              "<p><strong>Aufgabe:</strong> Ergänze head, title und body.</p>",
+              "<p>Weiter geht erst, wenn es korrekt ist.</p>"
             ],
-            "starter_code": "<html>\n  <body>\n    <head>\n      <title>Test</title>\n    </head>\n  </body>\n</html>",
+            "starter_code": "<!DOCTYPE html>\n<html>\n\n</html>\n",
+            "validation_checks": [
+              { "type": "regex", "pattern": "<!DOCTYPE\\s+html>", "fail_msg": "DOCTYPE fehlt oder ist falsch." },
+              { "type": "element_exists", "target": "html" },
+              { "type": "element_exists", "target": "head" },
+              { "type": "element_exists", "target": "title" },
+              { "type": "element_exists", "target": "body" }
+            ],
+            "success_msg": "✅ Sehr gut. Das Grundgerüst sitzt (Stufe 1)."
+          },
+
+          {
+            "id": "d1_019",
+            "type": "deep_read",
+            "title": "Warum wir wiederholen",
+            "content": [
+              "<p>Einmal korrekt tippen ist nicht „können“.</p>",
+              "<p>Du kannst etwas erst, wenn du es <strong>aus dem Kopf</strong> abrufen kannst – auch morgen noch.</p>",
+              "<p>Deshalb folgen jetzt Variationen.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_020",
+            "type": "fill_slots",
+            "title": "Lücken füllen – wie ein Formular (Slots)",
+            "content": [
+              "<p><strong>Formular-Modus:</strong> Du kannst nur die Lücken (Slots) bearbeiten.</p>",
+              "<p>Nutze <strong>Tab</strong>, um zum nächsten Slot zu springen.</p>",
+              "<p>Ziel: Aus dem Kopf die richtigen Tags einsetzen.</p>"
+            ],
+            "template_lines": [
+              "<!{{1}} html>",
+              "<{{2}}>",
+              "  <{{3}}>",
+              "    <{{4}}>Meine Seite</{{4}}>",
+              "  </{{3}}>",
+              "  <{{5}}>",
+              "  </{{5}}>",
+              "</{{2}}>"
+            ],
+            "slots": [
+              { "id": 1, "expected": "DOCTYPE", "mode": "equals_ci", "hint": "Dokumenttyp" },
+              { "id": 2, "expected": "html", "mode": "equals_ci", "hint": "Root-Element" },
+              { "id": 3, "expected": "head", "mode": "equals_ci", "hint": "Metadaten" },
+              { "id": 4, "expected": "title", "mode": "equals_ci", "hint": "Tab-Titel" },
+              { "id": 5, "expected": "body", "mode": "equals_ci", "hint": "Seiteninhalt" }
+            ],
+            "success_msg": "✅ Slots korrekt. Grundgerüst (Stufe 2)."
+          },
+
+          {
+            "id": "d1_021",
+            "type": "deep_read",
+            "title": "Mini-Lektion: DOCTYPE",
+            "content": [
+              "<p><code>&lt;!DOCTYPE html&gt;</code> sagt dem Browser: „Moderne HTML-Parsing-Regeln“.</p>",
+              "<p>Es ist kein normales Element im DOM.</p>",
+              "<p>Merke: Es steht ganz oben.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_022",
+            "type": "reflection",
+            "title": "Mini-Check: DOCTYPE",
+            "content": [
+              "<p>Frage: Ist DOCTYPE ein Tag im DOM-Baum?</p>",
+              "<p>Antwort: Nein. Es steuert das Parsing.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_023",
+            "type": "deep_read",
+            "title": "Mini-Lektion: title",
+            "content": [
+              "<p><code>&lt;title&gt;</code> ist wichtig für:</p>",
+              "<ul><li>Browser-Tab</li><li>Lesezeichen</li><li>Suchmaschinen (kleiner Teil, aber relevant)</li></ul>",
+              "<p>title gehört in head.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_024",
+            "type": "fill_slots",
+            "title": "Slots – Reihenfolge festigen",
+            "content": [
+              "<p>Setze die richtigen Begriffe ein. Nur Slots sind editierbar.</p>",
+              "<p>Tab springt durch die Lücken.</p>"
+            ],
+            "template_lines": [
+              "<{{1}}>",
+              "  <{{2}}>",
+              "    <{{3}}>Titel</{{3}}>",
+              "  </{{2}}>",
+              "  <{{4}}>",
+              "  </{{4}}>",
+              "</{{1}}>"
+            ],
+            "slots": [
+              { "id": 1, "expected": "html", "mode": "equals_ci" },
+              { "id": 2, "expected": "head", "mode": "equals_ci" },
+              { "id": 3, "expected": "title", "mode": "equals_ci" },
+              { "id": 4, "expected": "body", "mode": "equals_ci" }
+            ],
+            "success_msg": "✅ Reihenfolge bestätigt."
+          },
+
+          {
+            "id": "d1_025",
+            "type": "deep_read",
+            "title": "Jetzt wird’s realistischer: Fehler sind normal",
+            "content": [
+              "<p>In echten Projekten liest du ständig Fehler.</p>",
+              "<p>Heute lernst du einen der häufigsten: head/body verwechselt oder verschachtelt.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_026",
+            "type": "now_you",
+            "title": "Debug 1 – head steckt im body (fix it)",
+            "content": [
+              "<p><strong>Aufgabe:</strong> Repariere die Struktur. head muss vor body stehen.</p>",
+              "<p>Tipp: Du brauchst nur die Tags zu verschieben, Inhalt kann bleiben.</p>"
+            ],
+            "starter_code": "<html>\n  <body>\n    <head>\n      <title>Test</title>\n    </head>\n  </body>\n</html>\n",
             "validation_checks": [
               {
                 "type": "regex",
                 "pattern": "<html>[\\s\\S]*<head>[\\s\\S]*</head>[\\s\\S]*<body>[\\s\\S]*</body>[\\s\\S]*</html>",
-                "fail_msg": "Der Head muss vor dem Body stehen."
-              }
+                "fail_msg": "❌ head muss vor body stehen, nicht im body."
+              },
+              { "type": "element_exists", "target": "title" }
+            ],
+            "success_msg": "✅ Debug bestanden. Du erkennst logische Strukturfehler."
+          },
+
+          {
+            "id": "d1_027",
+            "type": "deep_read",
+            "title": "Warum der Fehler schlimm ist",
+            "content": [
+              "<p>Browser versuchen, kaputtes HTML zu „reparieren“.</p>",
+              "<p>Das führt dazu, dass dein DOM nicht mehr dem entspricht, was du getippt hast.</p>",
+              "<p>Merke: Wenn etwas „komisch“ wirkt, ist oft die Struktur kaputt.</p>"
             ]
           },
 
           {
-            "id": "d1_s9_reflection_end",
+            "id": "d1_028",
             "type": "reflection",
-            "title": "Reflektion",
+            "title": "Mini-Check: Browser repariert?",
             "content": [
-              "<p>Denk kurz nach:</p>",
+              "<p>Frage: Kann ein Browser kaputtes HTML automatisch „umbauen“?</p>",
+              "<p>Antwort: Ja – und genau deshalb willst du saubere Struktur.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_029",
+            "type": "deep_read",
+            "title": "Micro-Drill: Das Grundgerüst als Mantra",
+            "content": [
+              "<p>Wiederhole im Kopf:</p>",
+              "<pre>DOCTYPE → html → head → title → body</pre>",
+              "<p>Jetzt folgt ein Schnell-Drill in kleinen Schritten.</p>"
+            ]
+          },
+
+          { "id": "d1_030", "type": "fill_slots", "title": "Drill 1/4", "content": ["<p>Fülle die Slots.</p>"],
+            "template_lines": ["<!{{1}} html>", "<{{2}}>", "</{{2}}>"],
+            "slots": [{ "id": 1, "expected": "DOCTYPE", "mode": "equals_ci" }, { "id": 2, "expected": "html", "mode": "equals_ci" }]
+          },
+          { "id": "d1_031", "type": "fill_slots", "title": "Drill 2/4", "content": ["<p>Fülle die Slots.</p>"],
+            "template_lines": ["<html>", "  <{{1}}>", "  </{{1}}>", "</html>"],
+            "slots": [{ "id": 1, "expected": "head", "mode": "equals_ci" }]
+          },
+          { "id": "d1_032", "type": "fill_slots", "title": "Drill 3/4", "content": ["<p>Fülle die Slots.</p>"],
+            "template_lines": ["<head>", "  <{{1}}>Titel</{{1}}>", "</head>"],
+            "slots": [{ "id": 1, "expected": "title", "mode": "equals_ci" }]
+          },
+          { "id": "d1_033", "type": "fill_slots", "title": "Drill 4/4", "content": ["<p>Fülle die Slots.</p>"],
+            "template_lines": ["<html>", "  <head></head>", "  <{{1}}>", "  </{{1}}>", "</html>"],
+            "slots": [{ "id": 1, "expected": "body", "mode": "equals_ci" }]
+          },
+
+          {
+            "id": "d1_034",
+            "type": "deep_read",
+            "title": "Jetzt erhöhen wir den Anspruch",
+            "content": [
+              "<p>Bis hierhin konntest du dich an Mustern orientieren.</p>",
+              "<p>Ab jetzt: weniger Hilfe, mehr Abruf aus dem Gedächtnis.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_035",
+            "type": "now_you",
+            "title": "Schreibe das Grundgerüst (ohne Vorlage, aber mit Check)",
+            "content": [
+              "<p><strong>Aufgabe:</strong> Schreibe das komplette Grundgerüst ohne Starter-Code.</p>",
+              "<p>Tipp: Denk an das Mantra aus dem Drill.</p>"
+            ],
+            "starter_code": "",
+            "validation_checks": [
+              { "type": "regex", "pattern": "<!DOCTYPE\\s+html>", "fail_msg": "DOCTYPE fehlt." },
+              { "type": "element_exists", "target": "html" },
+              { "type": "regex", "pattern": "<head>[\\s\\S]*<title>[\\s\\S]*</title>[\\s\\S]*</head>", "fail_msg": "title muss im head sein." },
+              { "type": "element_exists", "target": "body" }
+            ],
+            "success_msg": "✅ Stark. Du kannst es aus dem Kopf."
+          },
+
+          {
+            "id": "d1_036",
+            "type": "deep_read",
+            "title": "Ein bisschen Tiefe: Warum head/body getrennt sind",
+            "content": [
+              "<p>Trennung bedeutet: Metadaten (head) vs. Inhalt (body).</p>",
+              "<p>Das hilft nicht nur Browsern, sondern auch Tools: Suchmaschinen, Social Previews, Reader-Mode.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_037",
+            "type": "deep_read",
+            "title": "DOM – nochmal kurz, aber klar",
+            "content": [
+              "<p>Der Browser baut aus deinem HTML einen Baum.</p>",
+              "<p>Wenn du falsch verschachtelst, ändert sich der Baum – und damit das Verhalten von CSS/JS später.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_038",
+            "type": "reflection",
+            "title": "Mini-Check: Was ist DOM?",
+            "content": [
+              "<p>DOM = Document Object Model.</p>",
+              "<p>Merke: Es ist der Baum, den der Browser baut, nicht nur dein Text.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_039",
+            "type": "deep_read",
+            "title": "Wir trainieren jetzt Fehlerresistenz",
+            "content": [
+              "<p>Du lernst nicht nur „wie es richtig ist“, sondern auch „wie es falsch aussieht“.</p>",
+              "<p>Das macht dich schnell besser, weil du Fehler sofort erkennst.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_040",
+            "type": "now_you",
+            "title": "Debug 2 – title im body (fix it)",
+            "content": [
+              "<p>title gehört in den head. Repariere es.</p>"
+            ],
+            "starter_code": "<!DOCTYPE html>\n<html>\n  <head>\n  </head>\n  <body>\n    <title>Falsch</title>\n  </body>\n</html>\n",
+            "validation_checks": [
+              { "type": "regex", "pattern": "<head>[\\s\\S]*<title>[\\s\\S]*</title>[\\s\\S]*</head>", "fail_msg": "❌ title muss in den head." }
+            ],
+            "success_msg": "✅ Debug 2 bestanden."
+          },
+
+          {
+            "id": "d1_041",
+            "type": "deep_read",
+            "title": "Achtung: Sauber schließen",
+            "content": [
+              "<p>Viele Probleme entstehen durch fehlende Endtags.</p>",
+              "<p>Heute reichen uns: html/head/title/body sauber öffnen und schließen.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_042",
+            "type": "fill_slots",
+            "title": "Schließen trainieren (Slots)",
+            "content": [
+              "<p>Setze die passenden Endtags ein.</p>"
+            ],
+            "template_lines": [
+              "<html>",
+              "  <head>",
+              "    <title>Meine Seite</title>",
+              "  {{1}}",
+              "  <body>",
+              "  {{2}}",
+              "{{3}}"
+            ],
+            "slots": [
+              { "id": 1, "expected": "</head>", "mode": "equals_ci" },
+              { "id": 2, "expected": "</body>", "mode": "equals_ci" },
+              { "id": 3, "expected": "</html>", "mode": "equals_ci" }
+            ],
+            "success_msg": "✅ Endtags sitzen."
+          },
+
+          {
+            "id": "d1_043",
+            "type": "deep_read",
+            "title": "Mini-Lektion: Einrückung",
+            "content": [
+              "<p>Einrückung ist für Menschen, nicht für Browser – aber sie verhindert Denkfehler.</p>",
+              "<p>Wenn du sauber einrückst, erkennst du Verschachtelungsfehler sofort.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_044",
+            "type": "now_you",
+            "title": "Einrückung üben (kurz)",
+            "content": [
+              "<p>Formatiere das Grundgerüst mit sauberer Einrückung.</p>"
+            ],
+            "starter_code": "<!DOCTYPE html>\n<html>\n<head>\n<title>Test</title>\n</head>\n<body>\n</body>\n</html>\n",
+            "validation_checks": [
+              { "type": "element_exists", "target": "head" },
+              { "type": "element_exists", "target": "body" }
+            ],
+            "success_msg": "✅ Passt. (Format ist heute nicht streng bewertet.)"
+          },
+
+          {
+            "id": "d1_045",
+            "type": "deep_read",
+            "title": "Was du heute NICHT machen musst",
+            "content": [
+              "<p>Heute kein CSS und kein JavaScript.</p>",
+              "<p>Du willst zuerst Struktur automatisieren, sonst wird später alles chaotisch.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_046",
+            "type": "deep_read",
+            "title": "Micro-Story: Warum Profis so streng sind",
+            "content": [
+              "<p>In Teams muss HTML lesbar und zuverlässig sein.</p>",
+              "<p>Wenn dein HTML schon wackelt, ist alles darüber wackelig.</p>",
+              "<p>Deshalb: Struktur zuerst.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_047",
+            "type": "reflection",
+            "title": "Reflexion – Kernregel",
+            "content": [
+              "<p>Wenn du nur eine Regel mitnimmst:</p>",
+              "<pre>DOCTYPE → html → head → title → body</pre>",
+              "<p>Wenn du das morgen ohne Hilfe schreiben kannst, war Tag 1 ein Erfolg.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_048",
+            "type": "deep_read",
+            "title": "Vor-Challenge: Mentales Warm-up",
+            "content": [
+              "<p>Bevor du die Challenge machst:</p>",
+              "<ul><li>Atme kurz durch.</li><li>Sieh dir das Mantra im Kopf an.</li><li>Dann tippe.</li></ul>"
+            ]
+          },
+
+          {
+            "id": "d1_049",
+            "type": "now_you",
+            "title": "Challenge Teil 1 – Nur Struktur",
+            "content": [
+              "<p>Schreibe: DOCTYPE, html, head, body (ohne title).</p>",
+              "<p>Danach kommt Teil 2.</p>"
+            ],
+            "starter_code": "",
+            "validation_checks": [
+              { "type": "regex", "pattern": "<!DOCTYPE\\s+html>", "fail_msg": "DOCTYPE fehlt." },
+              { "type": "element_exists", "target": "html" },
+              { "type": "element_exists", "target": "head" },
+              { "type": "element_exists", "target": "body" }
+            ],
+            "success_msg": "✅ Struktur ok. Jetzt title ergänzen."
+          },
+
+          {
+            "id": "d1_050",
+            "type": "now_you",
+            "title": "Challenge Teil 2 – title richtig platzieren",
+            "content": [
+              "<p>Ergänze jetzt <code>&lt;title&gt;</code> im head.</p>"
+            ],
+            "starter_code": "",
+            "validation_checks": [
+              { "type": "regex", "pattern": "<head>[\\s\\S]*<title>[\\s\\S]*</title>[\\s\\S]*</head>", "fail_msg": "title fehlt oder ist nicht im head." }
+            ],
+            "success_msg": "✅ Challenge bestanden."
+          },
+
+          {
+            "id": "d1_051",
+            "type": "deep_read",
+            "title": "Warum wir in zwei Teilen prüfen",
+            "content": [
+              "<p>Teile zerlegen komplexe Aufgaben in kontrollierbare Einheiten.</p>",
+              "<p>So merkst du schneller, was genau noch nicht sitzt.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_052",
+            "type": "fill_slots",
+            "title": "Cooldown – schneller Slot-Check",
+            "content": [
+              "<p>Zum Abschluss noch ein kurzer Slot-Check.</p>"
+            ],
+            "template_lines": [
+              "<!{{1}} html>",
+              "<{{2}}>",
+              "  <{{3}}>",
+              "    <{{4}}>X</{{4}}>",
+              "  </{{3}}>",
+              "  <{{5}}></{{5}}>",
+              "</{{2}}>"
+            ],
+            "slots": [
+              { "id": 1, "expected": "DOCTYPE", "mode": "equals_ci" },
+              { "id": 2, "expected": "html", "mode": "equals_ci" },
+              { "id": 3, "expected": "head", "mode": "equals_ci" },
+              { "id": 4, "expected": "title", "mode": "equals_ci" },
+              { "id": 5, "expected": "body", "mode": "equals_ci" }
+            ],
+            "success_msg": "✅ Sitzt."
+          },
+
+          {
+            "id": "d1_053",
+            "type": "deep_read",
+            "title": "Mini-Vorschau auf Tag 2",
+            "content": [
+              "<p>Morgen geht es in den head hinein:</p>",
+              "<ul><li>charset</li><li>viewport</li><li>meta basics</li></ul>",
+              "<p>Das macht deine Seiten „real“.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_054",
+            "type": "reflection",
+            "title": "Selbstcheck – Kannst du’s ohne Hilfe?",
+            "content": [
+              "<p>Ohne zu tippen: Kannst du das Grundgerüst im Kopf aufschreiben?</p>",
+              "<p>Wenn ja: perfekt. Wenn nein: wiederhole die Slots/Challenge.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_055",
+            "type": "deep_read",
+            "title": "Bonuswissen: Warum HTML „Markup“ heißt",
+            "content": [
+              "<p>Markup bedeutet: Text wird markiert/ausgezeichnet, um Bedeutung zu geben.</p>",
+              "<p>Es ist ein strukturiertes Dokumentformat, kein Programm.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_056",
+            "type": "deep_read",
+            "title": "Ein häufiger Anfängerfehler",
+            "content": [
+              "<p>Fehler: HTML wie Layout zu benutzen.</p>",
+              "<p>Richtig: HTML beschreibt Bedeutung. Layout kommt später mit CSS.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_057",
+            "type": "reflection",
+            "title": "Merksatz (final)",
+            "content": [
+              "<pre>HTML = Struktur\nCSS = Aussehen\nJS = Verhalten</pre>",
+              "<p>Wenn du nur das behältst, sparst du dir später viele Stunden.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_058",
+            "type": "deep_read",
+            "title": "Tag 1 Abschluss – Was du geschafft hast",
+            "content": [
               "<ul>",
-              "<li>Warum ist die Reihenfolge von head und body wichtig?</li>",
-              "<li>Was passiert, wenn HTML falsch strukturiert ist?</li>",
+              "<li>Du kennst den Zweck von HTML.</li>",
+              "<li>Du verstehst head/body.</li>",
+              "<li>Du hast das Grundgerüst mehrfach geübt (Copy, Slots, Debug, Challenge).</li>",
               "</ul>"
             ]
           },
 
           {
-            "id": "d1_s10_challenge",
-            "type": "now_you",
-            "title": "Mini-Challenge",
+            "id": "d1_059",
+            "type": "deep_read",
+            "title": "Wiederholen (Empfehlung)",
             "content": [
-              "<p>Letzte Aufgabe für heute.</p>",
-              "<p>Schreibe das komplette HTML-Grundgerüst ohne Vorlage.</p>"
-            ],
-            "starter_code": "",
-            "validation_checks": [
-              { "type": "element_exists", "target": "html" },
-              { "type": "element_exists", "target": "head" },
-              { "type": "element_exists", "target": "body" },
-              { "type": "element_exists", "target": "title" }
-            ],
-            "success_msg": "Großartig! Tag 1 abgeschlossen."
-          }
+              "<p>Wenn du heute nur 1 Minute extra investierst:</p>",
+              "<p>Schreibe das Grundgerüst noch einmal komplett aus dem Kopf in den Editor und drücke Check (Challenge Schritte).</p>"
+            ]
+          },
 
+          {
+            "id": "d1_060",
+            "type": "reflection",
+            "title": "Pause",
+            "content": [
+              "<p>Mach eine kurze Pause.</p>",
+              "<p>Dein Gehirn lernt in der Pause weiter.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_061",
+            "type": "deep_read",
+            "title": "Extra: Warum wir Slots nutzen",
+            "content": [
+              "<p>Slots verhindern, dass du dich „durch Löschung“ herauswindest.</p>",
+              "<p>Du trainierst genau das, was sitzen muss: die richtigen Begriffe an der richtigen Stelle.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_062",
+            "type": "deep_read",
+            "title": "Extra: Was passiert bei falscher Verschachtelung",
+            "content": [
+              "<p>Dann entsteht ein anderes DOM als erwartet.</p>",
+              "<p>Später bedeutet das: CSS selektiert falsch, JS findet Elemente nicht.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_063",
+            "type": "reflection",
+            "title": "Mini-Check – Ursache/Wirkung",
+            "content": [
+              "<p>Wenn CSS „spinnt“, ist es manchmal kein CSS-Problem – sondern HTML-Struktur.</p>"
+            ]
+          },
+
+          {
+            "id": "d1_064",
+            "type": "deep_read",
+            "title": "Extra: Praktische Gewohnheit",
+            "content": [
+              "<p>Gewohnheit ab heute:</p>",
+              "<ol><li>Struktur zuerst</li><li>Dann Inhalt</li><li>Dann Styling</li></ol>"
+            ]
+          },
+
+          {
+            "id": "d1_065",
+            "type": "deep_read",
+            "title": "Tag 1 beendet",
+            "content": [
+              "<p><strong>Glückwunsch.</strong> Du hast die Grundlage gebaut.</p>",
+              "<p>Tag 2 macht deine Seite „echter“: Meta charset, viewport, sinnvolle head-Inhalte.</p>"
+            ]
+          },
+
+          { "id": "d1_066", "type": "reflection", "title": "Feedback an dich selbst", "content": ["<p>Was war heute am schwierigsten? Struktur? Reihenfolge? Debug?</p>"] },
+          { "id": "d1_067", "type": "reflection", "title": "Retention Hack", "content": ["<p>Morgen vor Tag 2: Schreibe das Grundgerüst 1x aus dem Kopf. Dann erst starten.</p>"] },
+          { "id": "d1_068", "type": "deep_read", "title": "Optional: Wiederholungs-Loop", "content": ["<p>Wenn du unsicher bist: Wiederhole d1_030–d1_033 (Drills) und d1_035 (aus dem Kopf).</p>"] },
+          { "id": "d1_069", "type": "deep_read", "title": "Ausblick", "content": ["<p>Tag 2 wird länger und praxisnäher. Wir bauen einen sauberen head wie in echten Projekten.</p>"] },
+          { "id": "d1_070", "type": "reflection", "title": "Ende", "content": ["<p>Ende von Tag 1.</p>"] }
         ]
       }
     ]
